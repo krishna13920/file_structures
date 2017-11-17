@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include "sort.h"
 #include "sort.cpp"
 
 using namespace std;
@@ -24,23 +23,23 @@ vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const i
 	vector<vector<T>> *vectorToReturn = new vector<vector<T>>;
 
 	// Instantiate a heap
-	SortProject<T> *myHeap = new SortProject<T>(heapSize);
+	SortProject<T> *myHeap = new SortProject<T>();
 
 	// While the replacement selection vector is not full, heapify new element
 
 	T temp;
 	int totalCap; // store capacity of myHeap into totalCap
-	int IndexOfNextItemToSort;
+	unsigned int IndexOfNextItemToSort;
 	int currentList = 0;
 	T elementPopped, nextElement;
 	vector<T> *tempVector = new vector<T>;
 
 
 
-	while (IndexOfNextItemToSort < vectorToSort.size() || myHeap->get_size() > 0) {
+	while (IndexOfNextItemToSort < vectorToSort.size() /*|| myHeap->get_size() > 0*/) {
 		elementPopped = myHeap->current_heap_pop();
 		// push elementPopped in vector called tempVector
-		tempVector.push_back(elementPopped);
+		tempVector->push_back(elementPopped);
 
 
 		if (IndexOfNextItemToSort < vectorToSort.size()) {
@@ -60,11 +59,10 @@ vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const i
 
 		//if current heap size is zero push the tempVector onto the vector to return
 		if (myHeap->size == 0) {
-			vectorToReturn.push_back(*tempVector);
+			vectorToReturn->push_back(*tempVector);
 			tempVector = new vector<T>;
 		}
 	}
 	delete myHeap;
 	return *vectorToReturn;
 }
-
