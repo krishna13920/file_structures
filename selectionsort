@@ -1,1 +1,70 @@
+#include <iostream>
+#include <vector>
+#include "sort.h"
+#include "sort.cpp"
+
+using namespace std;
+
+
+
+	/**
+	* @brief Peforms the replacement selection sort on a vector of data items
+	* @details Takes a vectors filled with data and uses an active and pending heap to
+	* create multiple sorted lists
+	*
+	* @param vectorToSort The vector to be sorted
+	* @param heapDirection Flag default is true
+	* @return vectorToReturn Returns a vector of sorted vectors
+	*/
+template <typename T>
+vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const int heapSize = 8,
+	const bool heapDirection = true) {
+
+	// Instantiate a vector of vectors to return
+	vector<vector<T>> *vectorToReturn = new vector<vector<T>>;
+
+	// Instantiate a heap
+	SortProject<T> *myHeap = new SortProject<T>(heapSize);
+
+	// While the replacement selection vector is not full, heapify new element
+
+	T temp;
+	int totalCap; // store capacity of myHeap into totalCap
+	int IndexOfNextItemToSort;
+	int currentList = 0;
+	T elementPopped, nextElement;
+	vector<T> *tempVector = new vector<T>;
+
+
+
+	while (IndexOfNextItemToSort < vectorToSort.size() || myHeap->get_size() > 0) {
+		elementPopped = myHeap->current_heap_pop();
+		// push elementPopped in vector called tempVector
+		tempVector.push_back(elementPopped);
+
+
+		if (IndexOfNextItemToSort < vectorToSort.size()) {
+			nextElement = vectorToSort[IndexOfNextItemToSort];
+			IndexOfNextItemToSort++;
+			if (heapDirection)// if heapDirection is true
+				if (nextElement < elementPopped)
+					myHeap->pending_heap_push(nextElement);
+				else
+					myHeap->current_heap_push(nextElement);
+			else
+				if (nextElement > elementPopped)
+					myHeap->pending_heap_push(nextElement);
+				else
+					myHeap->current_heap_push(nextElement);
+		}
+
+		//if current heap size is zero push the tempVector onto the vector to return
+		if (myHeap->size == 0) {
+			vectorToReturn.push_back(*tempVector);
+			tempVector = new vector<T>;
+		}
+	}
+	delete myHeap;
+	return *vectorToReturn;
+}
 
