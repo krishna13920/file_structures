@@ -25,42 +25,48 @@ vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const i
 	// Instantiate a heap
 	SortProject<T> *myHeap = new SortProject<T>();
 
-	// While the replacement selection vector is not full, heapify new element
-
 	T temp;
-	int totalCap; // store capacity of myHeap into totalCap
+	int totalCap = 8; // store capacity of myHeap into totalCap
 	unsigned int IndexOfNextItemToSort;
 	int currentList = 0;
-	T elementPopped, nextElement;
-	vector<T> *tempVector = new vector<T>;
+	T lastElementPopped, newElement;
+	vector<T> *currentSortedList = new vector<T>;
 
-
-
-	while (IndexOfNextItemToSort < vectorToSort.size() /*|| myHeap->get_size() > 0*/) {
-		elementPopped = myHeap->current_heap_pop();
-		// push elementPopped in vector called tempVector
-		tempVector->push_back(elementPopped);
-
+	// While the replacement selection vector is not full, heapify new element
+	for (unsigned int i = 0; i < totalCap && i < vectorToSort.size(); i++) {
+			temp = vectorToSort[i];
+			myHeap->current_heap_push(temp);
+			IndexOfNextItemToSort = i + 1;
+		}
+	//while there is a new element
+	while (IndexOfNextItemToSort < vectorToSort.size() /*|| myHeap.size > 0*/) {
+		//pop the root of the current heap
+		lastElementPopped = myHeap->current_heap_pop();
+		//add the root to the current sorted list
+		currentSortedList->push_back(lastElementPopped);
 
 		if (IndexOfNextItemToSort < vectorToSort.size()) {
-			nextElement = vectorToSort[IndexOfNextItemToSort];
+			newElement = vectorToSort[IndexOfNextItemToSort];
 			IndexOfNextItemToSort++;
-			if (heapDirection)// if heapDirection is true
-				if (nextElement < elementPopped)
-					myHeap->pending_heap_push(nextElement);
-				else
-					myHeap->current_heap_push(nextElement);
+			
+			// if the new element is less than the last element popped
+			if (newElement < lastElementPopped) {
+				// push it onto the the pending heap
+				myHeap->pending_heap_push(newElement);
+				SortProject::currentHeapSize--;
+				SortProject::pendingHeapSize++;
+				//if current heap size is zero push the currentSortedList onto the vector to return
+				if (myHeap->size == 0) {
+					vectorToReturn->push_back(*currentSortedList);
+					currentSortedList = new vector<T>;
+					heapDirection = false;
+				}
+			}
+			// else if the new element is greater than the last element popped
 			else
-				if (nextElement > elementPopped)
-					myHeap->pending_heap_push(nextElement);
-				else
-					myHeap->current_heap_push(nextElement);
-		}
-
-		//if current heap size is zero push the tempVector onto the vector to return
-		if (myHeap->size == 0) {
-			vectorToReturn->push_back(*tempVector);
-			tempVector = new vector<T>;
+				// push it onto the current heap
+				myHeap->current_heap_push(newElement);
+			
 		}
 	}
 	delete myHeap;
