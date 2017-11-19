@@ -4,8 +4,6 @@
 
 using namespace std;
 
-
-
 	/**
 	* @brief Peforms the replacement selection sort on a vector of data items
 	* @details Takes a vectors filled with data and uses an active and pending heap to
@@ -16,8 +14,7 @@ using namespace std;
 	* @return vectorToReturn Returns a vector of sorted vectors
 	*/
 template <typename T>
-vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const int heapSize = 8,
-	const bool heapDirection = true) {
+vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const int heapSize = 8) {
 
 	// Instantiate a vector of vectors to return
 	vector<vector<T>> *vectorToReturn = new vector<vector<T>>;
@@ -25,6 +22,8 @@ vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const i
 	// Instantiate a heap
 	SortProject<T> *myHeap = new SortProject<T>();
 
+	// Declare variables
+	bool heapDirection = true;
 	T temp;
 	int totalCap = 8; // store capacity of myHeap into totalCap
 	unsigned int IndexOfNextItemToSort;
@@ -66,7 +65,6 @@ vector<vector<T>> replacementselectionSort(const vector<T> vectorToSort, const i
 			else
 				// push it onto the current heap
 				myHeap->current_heap_push(newElement);
-			
 		}
 	}
 	delete myHeap;
