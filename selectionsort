@@ -5,9 +5,9 @@
 using namespace std;
 
 	/**
-	* @brief Peforms the replacement selection sort on a vector of data items
-	* @details Takes a vectors filled with data and uses an active and pending heap to
-	* create multiple sorted lists
+	* @brief Peforms the replacement selection sort 
+	* @details Takes a vector filled with data and uses an active and pending heap to
+	* create multiple sorted lists and stores the lists in a vector.
 	*
 	* @param vectorToSort The vector to be sorted
 	* @param heapDirection Flag default is true
